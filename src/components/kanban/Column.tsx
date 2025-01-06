@@ -1,42 +1,67 @@
+import React from "react";
+import { DraggableAttributes, UniqueIdentifier } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { KanbanCard } from "./Card";
-import { UniqueIdentifier } from "@dnd-kit/core";
+import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 
-export function Column({ id }: { id: UniqueIdentifier }) {
+interface ColumnContextprops {
+  attributes: DraggableAttributes;
+  listeners: SyntheticListenerMap | undefined;
+}
+
+const ColumnContext = React.createContext<ColumnContextprops>(
+  {} as ColumnContextprops
+);
+
+const useColumnContext = () => React.useContext(ColumnContext);
+
+export function Column({
+  id,
+  children,
+}: {
+  id: UniqueIdentifier;
+  children?: React.ReactNode;
+}) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
       id: id,
     });
-  const transformStyle = transform
-    ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
-    : undefined;
+  const column = {
+    attributes,
+    listeners,
+  } as ColumnContextprops;
 
   return (
-    <Card
-      className="min-w-72"
-      {...attributes}
-      {...listeners}
-      ref={setNodeRef}
-      style={{
-        transform: transformStyle,
-        opacity: isDragging ? 0.5 : 1,
-        cursor: isDragging ? "grabbing" : "grab",
-      }}
-    >
-      <ColumnHeader id={id} />
-      <ColumnBody />
-    </Card>
+    <ColumnContext.Provider value={column}>
+      <Card
+        className="min-w-72"
+        ref={setNodeRef}
+        style={{
+          transform: transform
+            ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+            : undefined,
+          opacity: isDragging ? 0.5 : 1,
+        }}
+      >
+        {children}
+      </Card>
+    </ColumnContext.Provider>
   );
 }
 
-export function ColumnHeader({ id }: { id: UniqueIdentifier }) {
+export function ColumnHandler({ children }: { children?: React.ReactNode }) {
+  const { attributes, listeners } = useColumnContext();
   return (
-    <CardHeader>
-      <CardTitle>{id}</CardTitle>
-    </CardHeader>
+    <div {...attributes} {...listeners}>
+      {children}
+    </div>
   );
 }
+
+export const ColumnHeader = CardHeader;
+export const ColumnTitle = CardTitle;
+export const ColumnContent = CardContent;
 
 export function ColumnBody() {
   return (
