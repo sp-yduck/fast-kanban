@@ -69,14 +69,16 @@ export function KanbanCardHandler({
 
 export function KanbanCardsContainer({
   items,
+  data,
   cardRenderFunc,
 }: {
   items: { id: UniqueIdentifier }[];
-  cardRenderFunc: (id: UniqueIdentifier) => React.ReactNode;
+  data?: unknown;
+  cardRenderFunc: (id: UniqueIdentifier, data: unknown) => React.ReactNode;
 }) {
   return (
     <SortableContext id="kanban-card" items={items}>
-      {items.map((item) => cardRenderFunc(item.id))}
+      {items.map((item) => cardRenderFunc(item.id, data))}
     </SortableContext>
   );
 }

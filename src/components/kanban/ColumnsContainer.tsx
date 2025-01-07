@@ -8,19 +8,27 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { CardContent } from "@/components/ui/card";
 
-export function SortableColumnsContainer(props: {
+export function SortableColumnsContainer({
+  items,
+  kanbanCardItems,
+  data,
+  columnRenderFunc,
+}: {
   items: { id: UniqueIdentifier }[];
   kanbanCardItems: { id: UniqueIdentifier; column_id: UniqueIdentifier }[];
+  data?: unknown;
   columnRenderFunc: (
     id: UniqueIdentifier,
-    items: { id: UniqueIdentifier }[]
+    items: { id: UniqueIdentifier }[],
+    data?: unknown
   ) => React.ReactNode;
 }) {
   const { setNodeRef } = useDroppable({ id: "droppable" });
-  const [cols, setCols] = useState<{ id: UniqueIdentifier }[]>(props.items);
-  const [kanbanCards, setKanbanCards] = useState<
-    { id: UniqueIdentifier; column_id: UniqueIdentifier }[]
-  >(props.kanbanCardItems);
+  const [cols, setCols] = useState<{ id: UniqueIdentifier }[]>(items);
+  const [kanbanCards, setKanbanCards] =
+    useState<{ id: UniqueIdentifier; column_id: UniqueIdentifier }[]>(
+      kanbanCardItems
+    );
   return (
     <DndContext
       onDragEnd={handleColumnsDragEnd}
@@ -29,9 +37,10 @@ export function SortableColumnsContainer(props: {
       <SortableContext id="columns" items={cols}>
         <CardContent className="flex space-x-4" ref={setNodeRef}>
           {cols.map((col) =>
-            props.columnRenderFunc(
+            columnRenderFunc(
               col.id,
-              kanbanCards.filter((item) => item.column_id === col.id)
+              kanbanCards.filter((item) => item.column_id === col.id),
+              data
             )
           )}
         </CardContent>

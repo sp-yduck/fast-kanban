@@ -36,39 +36,6 @@ function App() {
     { id: "in progress-card-1", column_id: "in progress" },
     { id: "done-card-1", column_id: "done" },
   ];
-  function renderColumn(
-    id: UniqueIdentifier,
-    items: { id: UniqueIdentifier }[]
-  ) {
-    function renderKanbanCard(id: UniqueIdentifier) {
-      return (
-        <KanbanCard key={id} id={id}>
-          <KanbanCardHandler>
-            <KanbanCardHeader>
-              <KanbanCardTitle>kanban card title {id}</KanbanCardTitle>
-            </KanbanCardHeader>
-            <KanbanCardContent>kanban card content</KanbanCardContent>
-          </KanbanCardHandler>
-        </KanbanCard>
-      );
-    }
-
-    return (
-      <Column key={id} id={id}>
-        <ColumnHandler>
-          <ColumnHeader>
-            <ColumnTitle>{id}</ColumnTitle>
-          </ColumnHeader>
-        </ColumnHandler>
-        <ColumnContent>
-          <KanbanCardsContainer
-            items={items}
-            cardRenderFunc={renderKanbanCard}
-          />
-        </ColumnContent>
-      </Column>
-    );
-  }
 
   return (
     <div className="py-12 px-8 space-y-12">
@@ -94,3 +61,31 @@ function App() {
 }
 
 export default App;
+
+function renderColumn(id: UniqueIdentifier, items: { id: UniqueIdentifier }[]) {
+  return (
+    <Column key={id} id={id}>
+      <ColumnHandler>
+        <ColumnHeader>
+          <ColumnTitle>{id}</ColumnTitle>
+        </ColumnHeader>
+      </ColumnHandler>
+      <ColumnContent>
+        <KanbanCardsContainer items={items} cardRenderFunc={renderKanbanCard} />
+      </ColumnContent>
+    </Column>
+  );
+}
+
+function renderKanbanCard(id: UniqueIdentifier) {
+  return (
+    <KanbanCard key={id} id={id}>
+      <KanbanCardHandler>
+        <KanbanCardHeader>
+          <KanbanCardTitle>kanban card title {id}</KanbanCardTitle>
+        </KanbanCardHeader>
+        <KanbanCardContent>kanban card content</KanbanCardContent>
+      </KanbanCardHandler>
+    </KanbanCard>
+  );
+}
