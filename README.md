@@ -1,50 +1,84 @@
-# React + TypeScript + Vite
+# React Tailwind Kanban
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+react-tailwind-kanban is a TypeScript library for creating Kanban boards without struggling with the complex logic behind the UI (e.g. drag-and-drop).
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Good abstraction of logic: You will never struggle with drag-and-drop libraries. 
+- Customizable: react-tailwind-kanban allows you to use your own format of Kanban card, Column and Kanban Board.
+- Modern UI: React Tailwind Kanban uses [shadcn/ui](https://github.com/shadcn-ui/ui) for its base component.
+- Accessibility: React Tailwind Kanban uses [dnd-kit](https://github.com/clauderic/dnd-kit) for its base component, then it inherits some good features of dnd-kit like accessibility. 
 
-## Expanding the ESLint configuration
+## Examples
+### Demo site
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
+### Sample codes
+```example.ts
+function App() {
+  const columnItems = [
+    { id: "backlog" },
+    { id: "to do" },
+    { id: "in progress" },
+    { id: "done" },
+  ];
+  const kanbanCardItems = [
+    { id: "1", column_id: "backlog" },
+    { id: "2", column_id: "backlog" },
+    { id: "3", column_id: "to do" },
+    { id: "4", column_id: "in progress" },
+    { id: "5", column_id: "done" },
+  ];
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+  return (
+    <div className="py-12 px-8 space-y-12">
+      <div className="text-5xl font-bold text-center">
+        React Tailwind Kanban
+      </div>
+      <div>
+        <Kanban>
+          <KanbanHeader>
+            <KanbanTitle>Kanban Board</KanbanTitle>
+          </KanbanHeader>
+          <KanbanContent>
+            <SortableColumnsContainer
+              items={columnItems}
+              kanbanCardItems={kanbanCardItems}
+              columnRenderFunc={renderColumn}
+            />
+          </KanbanContent>
+        </Kanban>
+      </div>
+    </div>
+  );
+}
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+function renderColumn(id: UniqueIdentifier, items: { id: UniqueIdentifier }[]) {
+  return (
+    <Column key={id} id={id}>
+      <ColumnHandler>
+        <ColumnHeader>
+          <ColumnTitle>{id}</ColumnTitle>
+        </ColumnHeader>
+      </ColumnHandler>
+      <ColumnContent>
+        <KanbanCardsContainer items={items} cardRenderFunc={renderKanbanCard} />
+      </ColumnContent>
+    </Column>
+  );
+}
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+function renderKanbanCard(id: UniqueIdentifier) {
+  return (
+    <KanbanCard key={id} id={id}>
+      <KanbanCardHandler>
+        <KanbanCardHeader>
+          <KanbanCardTitle>ID: {id}</KanbanCardTitle>
+        </KanbanCardHeader>
+        <KanbanCardContent>kanban card content for {id}</KanbanCardContent>
+      </KanbanCardHandler>
+    </KanbanCard>
+  );
+}
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
 ```
