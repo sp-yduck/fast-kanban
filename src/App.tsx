@@ -30,11 +30,11 @@ function App() {
     { id: "done" },
   ];
   const kanbanCardItems = [
-    { id: "backlog-card-1", column_id: "backlog" },
-    { id: "backlog-card-2", column_id: "backlog" },
-    { id: "to do-card-1", column_id: "to do" },
-    { id: "in progress-card-1", column_id: "in progress" },
-    { id: "done-card-1", column_id: "done" },
+    { id: "1", column_id: "backlog" },
+    { id: "2", column_id: "backlog" },
+    { id: "3", column_id: "to do" },
+    { id: "4", column_id: "in progress" },
+    { id: "5", column_id: "done" },
   ];
 
   return (
@@ -82,9 +82,9 @@ function renderKanbanCard(id: UniqueIdentifier) {
     <KanbanCard key={id} id={id}>
       <KanbanCardHandler>
         <KanbanCardHeader>
-          <KanbanCardTitle>kanban card title {id}</KanbanCardTitle>
+          <KanbanCardTitle>ID: {id}</KanbanCardTitle>
         </KanbanCardHeader>
-        <KanbanCardContent>kanban card content</KanbanCardContent>
+        <KanbanCardContent>kanban card content for {id}</KanbanCardContent>
       </KanbanCardHandler>
     </KanbanCard>
   );

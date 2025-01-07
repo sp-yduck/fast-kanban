@@ -41,7 +41,7 @@ export function Column({
   return (
     <ColumnContext.Provider value={column}>
       <Card
-        className="min-w-72"
+        className="w-72"
         ref={setNodeRef}
         style={{
           transform: transform
@@ -70,9 +70,5 @@ export const ColumnHeader = CardHeader;
 export const ColumnTitle = CardTitle;
 
 export function ColumnContent({ children }: { children?: React.ReactNode }) {
-  return (
-    <CardContent className="flex-col min-h-80 space-y-2">
-      {children}
-    </CardContent>
-  );
+  return <CardContent className="flex-col space-y-2">{children}</CardContent>;
 }

@@ -39,7 +39,7 @@ export function KanbanCard({
   return (
     <CardContext.Provider value={card}>
       <Card
-        className="min-w-72"
+        className=""
         ref={setNodeRef}
         style={{
           transform: transform
