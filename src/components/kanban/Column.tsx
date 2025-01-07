@@ -2,7 +2,6 @@ import React from "react";
 import { DraggableAttributes, UniqueIdentifier } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { KanbanCard } from "./Card";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 
 interface ColumnContextprops {
@@ -23,10 +22,17 @@ export function Column({
   id: UniqueIdentifier;
   children?: React.ReactNode;
 }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useSortable({
-      id: id,
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: id,
+    data: { type: "Column" },
+  });
   const column = {
     attributes,
     listeners,
@@ -41,6 +47,7 @@ export function Column({
           transform: transform
             ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
             : undefined,
+          transition: transition,
           opacity: isDragging ? 0.5 : 1,
         }}
       >
@@ -61,13 +68,11 @@ export function ColumnHandler({ children }: { children?: React.ReactNode }) {
 
 export const ColumnHeader = CardHeader;
 export const ColumnTitle = CardTitle;
-export const ColumnContent = CardContent;
 
-export function ColumnBody() {
+export function ColumnContent({ children }: { children?: React.ReactNode }) {
   return (
     <CardContent className="flex-col min-h-80 space-y-2">
-      <KanbanCard />
-      <KanbanCard />
+      {children}
     </CardContent>
   );
 }
