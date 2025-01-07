@@ -4,6 +4,7 @@ import {
   DragEndEvent,
   useDroppable,
   UniqueIdentifier,
+  DragOverEvent,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { CardContent } from "@/components/ui/card";
@@ -30,10 +31,7 @@ export function SortableColumnsContainer({
       kanbanCardItems
     );
   return (
-    <DndContext
-      onDragEnd={handleColumnsDragEnd}
-      //   onDragOver={handleKanbanCardDragOver}
-    >
+    <DndContext onDragEnd={onDragEnd} onDragOver={onDragOver}>
       <SortableContext id="columns" items={cols}>
         <CardContent className="flex space-x-4" ref={setNodeRef}>
           {cols.map((col) =>
@@ -48,19 +46,12 @@ export function SortableColumnsContainer({
     </DndContext>
   );
 
-  function handleColumnsDragEnd(event: DragEndEvent) {
+  function onDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!active || !over) return;
     const activeId = active.id;
     const overId = over.id;
     if (activeId === overId) return;
-
-    console.log(
-      active.data.current?.type,
-      over.data.current?.type,
-      activeId,
-      overId
-    );
 
     // Im dropping a Column over another Column
     if (
@@ -123,6 +114,55 @@ export function SortableColumnsContainer({
         });
         return newKanbanCards;
       });
+    }
+  }
+
+  function onDragOver(event: DragOverEvent) {
+    const { active, over } = event;
+    if (!active || !over) return;
+    if (active.id === over.id) return;
+    if (
+      active.data.current?.type === "Task" &&
+      over.data.current?.type === "Column"
+    ) {
+      // change the column_id of the task to the column_id of the column being dragged over
+      if (active.data.current?.column_id !== over.id) {
+        setKanbanCards((kanbanCards) => {
+          const activeIndex = kanbanCards.findIndex(
+            (card) => card.id === active.id
+          );
+          return kanbanCards.map((card, index) => {
+            if (index === activeIndex) {
+              return { ...card, column_id: over.id };
+            }
+            return card;
+          });
+        });
+      }
+    } else if (
+      active.data.current?.type === "Task" &&
+      over.data.current?.type === "Task"
+    ) {
+      // change the column_id of the task to the column_id of the task being dragged over
+      // and insert the task being dragged over to the position of the task being dragged
+      const activeTask = kanbanCards.find((card) => card.id === active.id);
+      const overTask = kanbanCards.find((card) => card.id === over.id);
+      if (!activeTask || !overTask) return;
+      const activeTaskColumnId = activeTask.column_id;
+      const overTaskColumnId = overTask.column_id;
+      if (activeTaskColumnId !== overTaskColumnId) {
+        setKanbanCards((kanbanCards) => {
+          const activeIndex = kanbanCards.findIndex(
+            (card) => card.id === active.id
+          );
+          return kanbanCards.map((card, index) => {
+            if (index === activeIndex) {
+              return { ...card, column_id: overTaskColumnId };
+            }
+            return card;
+          });
+        });
+      }
     }
   }
 }
