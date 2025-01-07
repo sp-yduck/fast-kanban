@@ -12,6 +12,7 @@ react-tailwind-kanban is a TypeScript library for creating Kanban boards without
 ## Examples
 ### Demo site
 
+https://sp-yduck.github.io/react-tailwind-kanban/
 
 ### Sample codes
 ```example.ts
