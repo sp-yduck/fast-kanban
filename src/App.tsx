@@ -1,26 +1,22 @@
-import { UniqueIdentifier } from "@dnd-kit/core";
 import {
+  UniqueIdentifier,
   Kanban,
   KanbanContent,
   KanbanHeader,
   KanbanTitle,
-} from "./components/kanban/Board";
-import {
   Column,
   ColumnHandler,
   ColumnHeader,
   ColumnContent,
   ColumnTitle,
-} from "./components/kanban/Column";
-import { SortableColumnsContainer } from "./components/kanban/ColumnsContainer";
-import {
+  SortableColumnsContainer,
   KanbanCard,
   KanbanCardHeader,
   KanbanCardTitle,
   KanbanCardContent,
   KanbanCardHandler,
   KanbanCardsContainer,
-} from "./components/kanban/Card";
+} from "react-tailwind-kanban";
 
 function App() {
   const columnItems = [
