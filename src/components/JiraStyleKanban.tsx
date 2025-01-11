@@ -21,7 +21,7 @@ import {
   KanbanCardContent,
   KanbanCardHandler,
   KanbanCardsContainer,
-} from "react-tailwind-kanban";
+} from "fast-kanban";
 
 export default function JiraStyleKanban({
   columnItems,

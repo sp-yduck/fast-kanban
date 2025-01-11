@@ -1,27 +1,27 @@
-# React Tailwind Kanban
+# Fast Kanban
 
-react-tailwind-kanban is a TypeScript library for creating Kanban boards without struggling with the complex logic behind the UI (e.g. drag-and-drop).
+fast-kanban is a TypeScript library for creating Kanban boards without struggling with the complex logic behind the UI (e.g. drag-and-drop).
 
 ## Features
 
 - Good abstraction of logic: You will never struggle with drag-and-drop libraries. 
-- Customizable: react-tailwind-kanban allows you to use your own format of Kanban card, Column and Kanban Board.
-- Modern UI: React Tailwind Kanban uses [shadcn/ui](https://github.com/shadcn-ui/ui) for its base component.
-- Accessibility: React Tailwind Kanban uses [dnd-kit](https://github.com/clauderic/dnd-kit) for its base component, then it inherits some good features of dnd-kit like accessibility. 
+- Customizable: fast-kanban allows you to use your own format of Kanban card, Column and Kanban Board.
+- Modern UI: Fast Kanban uses [shadcn/ui](https://github.com/shadcn-ui/ui) for its base component.
+- Accessibility: Fast Kanban uses [dnd-kit](https://github.com/clauderic/dnd-kit) for its base component, then it inherits some good features of dnd-kit like accessibility. 
 
 ## Installation
 ```sh
-npm install react-tailwind-kanban
+npm install fast-kanban
 ```
 
 ## Examples
 ### Demo site
 
-https://sp-yduck.github.io/react-tailwind-kanban/
+https://sp-yduck.github.io/fast-kanban/
 
 ### Sample codes
 
-You can find all the sample codes [here](https://github.com/sp-yduck/react-tailwind-kanban/tree/main/src/components).
+You can find all the sample codes [here](https://github.com/sp-yduck/fast-kanban/tree/main/src/components).
 
 
 ```example.ts

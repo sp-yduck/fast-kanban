@@ -18,9 +18,7 @@ function App() {
 
   return (
     <div className="py-12 space-y-12">
-      <div className="text-5xl font-bold text-center">
-        React Tailwind Kanban
-      </div>
+      <div className="text-5xl font-bold text-center">Fast Kanban</div>
       <div>
         <div className="bg-gray-100 p-8">
           <div className="text-xl px-2 py-4">Default UI</div>

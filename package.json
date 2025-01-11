@@ -1,5 +1,5 @@
 {
-  "name": "react-tailwind-kanban",
+  "name": "fast-kanban",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,7 +14,7 @@
     "lucide-react": "^0.471.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-tailwind-kanban": "file:packages/react-tailwind-kanban"
+    "fast-kanban": "file:packages/fast-kanban"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

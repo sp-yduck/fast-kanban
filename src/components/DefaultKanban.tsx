@@ -16,7 +16,7 @@ import {
   KanbanCardContent,
   KanbanCardHandler,
   KanbanCardsContainer,
-} from "react-tailwind-kanban";
+} from "fast-kanban";
 
 export default function DefaultKanban({
   columnItems,
