@@ -8,13 +8,16 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export function SortableColumnsContainer({
+  className,
   items,
   kanbanCardItems,
   data,
   columnRenderFunc,
 }: {
+  className?: string;
   items: { id: UniqueIdentifier }[];
   kanbanCardItems: { id: UniqueIdentifier; column_id: UniqueIdentifier }[];
   data?: unknown;
@@ -33,7 +36,10 @@ export function SortableColumnsContainer({
   return (
     <DndContext onDragEnd={onDragEnd} onDragOver={onDragOver}>
       <SortableContext id="columns" items={cols}>
-        <CardContent className="flex space-x-4" ref={setNodeRef}>
+        <CardContent
+          className={cn("flex space-x-4", className)}
+          ref={setNodeRef}
+        >
           {cols.map((col) =>
             columnRenderFunc(
               col.id,

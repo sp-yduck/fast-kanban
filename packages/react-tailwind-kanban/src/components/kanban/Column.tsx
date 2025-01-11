@@ -3,6 +3,7 @@ import { DraggableAttributes, UniqueIdentifier } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
+import { cn } from "@/lib/utils";
 
 interface ColumnContextprops {
   attributes: DraggableAttributes;
@@ -16,9 +17,11 @@ const ColumnContext = React.createContext<ColumnContextprops>(
 const useColumnContext = () => React.useContext(ColumnContext);
 
 export function Column({
+  className,
   id,
   children,
 }: {
+  className?: string;
   id: UniqueIdentifier;
   children?: React.ReactNode;
 }) {
@@ -41,7 +44,7 @@ export function Column({
   return (
     <ColumnContext.Provider value={column}>
       <Card
-        className="w-72"
+        className={cn("w-72", className)}
         ref={setNodeRef}
         style={{
           transform: transform
@@ -57,10 +60,16 @@ export function Column({
   );
 }
 
-export function ColumnHandler({ children }: { children?: React.ReactNode }) {
+export function ColumnHandler({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: React.ReactNode;
+}) {
   const { attributes, listeners } = useColumnContext();
   return (
-    <div {...attributes} {...listeners}>
+    <div {...attributes} {...listeners} className={cn(className)}>
       {children}
     </div>
   );
@@ -69,6 +78,16 @@ export function ColumnHandler({ children }: { children?: React.ReactNode }) {
 export const ColumnHeader = CardHeader;
 export const ColumnTitle = CardTitle;
 
-export function ColumnContent({ children }: { children?: React.ReactNode }) {
-  return <CardContent className="flex-col space-y-2">{children}</CardContent>;
+export function ColumnContent({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <CardContent className={cn("flex-col space-y-2", className)}>
+      {children}
+    </CardContent>
+  );
 }
