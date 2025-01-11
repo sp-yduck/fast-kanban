@@ -1,22 +1,5 @@
-import {
-  UniqueIdentifier,
-  Kanban,
-  KanbanContent,
-  KanbanHeader,
-  KanbanTitle,
-  Column,
-  ColumnHandler,
-  ColumnHeader,
-  ColumnContent,
-  ColumnTitle,
-  SortableColumnsContainer,
-  KanbanCard,
-  KanbanCardHeader,
-  KanbanCardTitle,
-  KanbanCardContent,
-  KanbanCardHandler,
-  KanbanCardsContainer,
-} from "react-tailwind-kanban";
+import DefaultKanban from "./components/DefaultKanban";
+import JiraStyleKanban from "./components/JiraStyleKanban";
 
 function App() {
   const columnItems = [
@@ -34,54 +17,30 @@ function App() {
   ];
 
   return (
-    <div className="py-12 px-8 space-y-12">
+    <div className="py-12 space-y-12">
       <div className="text-5xl font-bold text-center">
         React Tailwind Kanban
       </div>
       <div>
-        <Kanban>
-          <KanbanHeader>
-            <KanbanTitle>Kanban Board</KanbanTitle>
-          </KanbanHeader>
-          <KanbanContent>
-            <SortableColumnsContainer
-              items={columnItems}
+        <div className="bg-gray-100 p-8">
+          <div className="text-xl px-2 py-4">Default UI</div>
+          <DefaultKanban
+            columnItems={columnItems}
+            kanbanCardItems={kanbanCardItems}
+          />
+        </div>
+        <div className="p-8">
+          <div className="text-xl px-2 py-4">Jira Style UI</div>
+          <div>
+            <JiraStyleKanban
+              columnItems={columnItems}
               kanbanCardItems={kanbanCardItems}
-              columnRenderFunc={renderColumn}
             />
-          </KanbanContent>
-        </Kanban>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 export default App;
-
-function renderColumn(id: UniqueIdentifier, items: { id: UniqueIdentifier }[]) {
-  return (
-    <Column key={id} id={id}>
-      <ColumnHandler>
-        <ColumnHeader>
-          <ColumnTitle>{id}</ColumnTitle>
-        </ColumnHeader>
-      </ColumnHandler>
-      <ColumnContent>
-        <KanbanCardsContainer items={items} cardRenderFunc={renderKanbanCard} />
-      </ColumnContent>
-    </Column>
-  );
-}
-
-function renderKanbanCard(id: UniqueIdentifier) {
-  return (
-    <KanbanCard key={id} id={id}>
-      <KanbanCardHandler>
-        <KanbanCardHeader>
-          <KanbanCardTitle>ID: {id}</KanbanCardTitle>
-        </KanbanCardHeader>
-        <KanbanCardContent>kanban card content for {id}</KanbanCardContent>
-      </KanbanCardHandler>
-    </KanbanCard>
-  );
-}
