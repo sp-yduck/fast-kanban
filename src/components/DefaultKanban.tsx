@@ -16,32 +16,39 @@ import {
   KanbanCardContent,
   KanbanCardHandler,
   KanbanCardsContainer,
+  ColumnItems,
+  KanbanCardItems,
+  useColumnItems,
+  useKanbanCardItems,
 } from "fast-kanban";
+import { useEffect } from "react";
 
 export default function DefaultKanban({
   columnItems,
   kanbanCardItems,
 }: {
-  columnItems: { id: UniqueIdentifier }[];
-  kanbanCardItems: { id: UniqueIdentifier; column_id: UniqueIdentifier }[];
+  columnItems: ColumnItems;
+  kanbanCardItems: KanbanCardItems;
 }) {
+  const [, setColumnsItems] = useColumnItems();
+  const [, setKanbanCardItems] = useKanbanCardItems();
+  useEffect(() => {
+    setColumnsItems(columnItems);
+    setKanbanCardItems(kanbanCardItems);
+  }, [setColumnsItems, setKanbanCardItems, columnItems, kanbanCardItems]);
   return (
     <Kanban>
       <KanbanHeader>
         <KanbanTitle>Kanban Board</KanbanTitle>
       </KanbanHeader>
       <KanbanContent>
-        <SortableColumnsContainer
-          items={columnItems}
-          kanbanCardItems={kanbanCardItems}
-          columnRenderFunc={renderColumn}
-        />
+        <SortableColumnsContainer columnRenderFunc={renderColumn} />
       </KanbanContent>
     </Kanban>
   );
 }
 
-function renderColumn(id: UniqueIdentifier, items: { id: UniqueIdentifier }[]) {
+function renderColumn(id: UniqueIdentifier) {
   return (
     <Column key={id} id={id}>
       <ColumnHandler>
@@ -50,7 +57,10 @@ function renderColumn(id: UniqueIdentifier, items: { id: UniqueIdentifier }[]) {
         </ColumnHeader>
       </ColumnHandler>
       <ColumnContent>
-        <KanbanCardsContainer items={items} cardRenderFunc={renderKanbanCard} />
+        <KanbanCardsContainer
+          column_id={id}
+          cardRenderFunc={renderKanbanCard}
+        />
       </ColumnContent>
     </Column>
   );

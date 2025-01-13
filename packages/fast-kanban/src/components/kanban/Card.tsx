@@ -4,6 +4,7 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useKanbanCardItems } from "./Context";
 
 export const KanbanCardHeader = CardHeader;
 export const KanbanCardTitle = CardTitle;
@@ -74,15 +75,17 @@ export function KanbanCardHandler({
 
 export function KanbanCardsContainer({
   className,
-  items,
+  column_id,
   data,
   cardRenderFunc,
 }: {
   className?: string;
-  items: { id: UniqueIdentifier }[];
+  column_id: UniqueIdentifier;
   data?: unknown;
   cardRenderFunc: (id: UniqueIdentifier, data: unknown) => React.ReactNode;
 }) {
+  const [kanbanCards] = useKanbanCardItems();
+  const items = kanbanCards.filter((item) => item.column_id === column_id);
   return (
     <SortableContext id="kanban-card" items={items}>
       <div className={cn(className)}>

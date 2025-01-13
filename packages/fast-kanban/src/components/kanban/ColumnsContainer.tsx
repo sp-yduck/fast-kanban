@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -9,30 +9,25 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useColumnItems, useKanbanCardItems } from "./Context";
+import { ColumnItems } from "./types";
 
 export function SortableColumnsContainer({
   className,
-  items,
-  kanbanCardItems,
   data,
   columnRenderFunc,
 }: {
   className?: string;
-  items: { id: UniqueIdentifier }[];
-  kanbanCardItems: { id: UniqueIdentifier; column_id: UniqueIdentifier }[];
   data?: unknown;
   columnRenderFunc: (
     id: UniqueIdentifier,
-    items: { id: UniqueIdentifier }[],
+    items: ColumnItems,
     data?: unknown
   ) => React.ReactNode;
 }) {
   const { setNodeRef } = useDroppable({ id: "droppable" });
-  const [cols, setCols] = useState<{ id: UniqueIdentifier }[]>(items);
-  const [kanbanCards, setKanbanCards] =
-    useState<{ id: UniqueIdentifier; column_id: UniqueIdentifier }[]>(
-      kanbanCardItems
-    );
+  const [cols, setCols] = useColumnItems();
+  const [kanbanCards, setKanbanCards] = useKanbanCardItems();
   return (
     <DndContext onDragEnd={onDragEnd} onDragOver={onDragOver}>
       <SortableContext id="columns" items={cols}>
