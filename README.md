@@ -27,13 +27,15 @@ You can find all the sample codes [here](https://github.com/sp-yduck/fast-kanban
 ```example.ts
 // simple example implementation
 
-export function DefaultKanban({
-  columnItems,
-  kanbanCardItems,
-}: {
-  columnItems: { id: UniqueIdentifier }[];
-  kanbanCardItems: { id: UniqueIdentifier; column_id: UniqueIdentifier }[];
-}) {
+function App() {
+  return (
+    <KanbanProvider>
+      <DefaultKanban />
+    </KanbanProvider>
+  )
+}
+
+export function DefaultKanban() {
   return (
     <Kanban>
       <KanbanHeader>
@@ -41,8 +43,6 @@ export function DefaultKanban({
       </KanbanHeader>
       <KanbanContent>
         <SortableColumnsContainer
-          items={columnItems}
-          kanbanCardItems={kanbanCardItems}
           columnRenderFunc={renderColumn}
         />
       </KanbanContent>
@@ -50,7 +50,7 @@ export function DefaultKanban({
   );
 }
 
-function renderColumn(id: UniqueIdentifier, items: { id: UniqueIdentifier }[]) {
+function renderColumn(id: UniqueIdentifier, column_id: UniqueIdentifier) {
   return (
     <Column key={id} id={id}>
       <ColumnHandler>
@@ -59,7 +59,7 @@ function renderColumn(id: UniqueIdentifier, items: { id: UniqueIdentifier }[]) {
         </ColumnHeader>
       </ColumnHandler>
       <ColumnContent>
-        <KanbanCardsContainer items={items} cardRenderFunc={renderKanbanCard} />
+        <KanbanCardsContainer column_id={id} cardRenderFunc={renderKanbanCard} />
       </ColumnContent>
     </Column>
   );

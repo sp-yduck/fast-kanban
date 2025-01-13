@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   EllipsisIcon,
   PlusIcon,
@@ -21,6 +22,8 @@ import {
   KanbanCardContent,
   KanbanCardHandler,
   KanbanCardsContainer,
+  useColumnItems,
+  useKanbanCardItems,
 } from "fast-kanban";
 
 export default function JiraStyleKanban({
@@ -30,6 +33,12 @@ export default function JiraStyleKanban({
   columnItems: { id: UniqueIdentifier }[];
   kanbanCardItems: { id: UniqueIdentifier; column_id: UniqueIdentifier }[];
 }) {
+  const [, setColumnsItems] = useColumnItems();
+  const [, setKanbanCardItems] = useKanbanCardItems();
+  useEffect(() => {
+    setColumnsItems(columnItems);
+    setKanbanCardItems(kanbanCardItems);
+  }, [setColumnsItems, setKanbanCardItems, columnItems, kanbanCardItems]);
   return (
     <Kanban className="rounded-md shadow-none">
       <KanbanHeader>
@@ -38,8 +47,6 @@ export default function JiraStyleKanban({
       <KanbanContent>
         <SortableColumnsContainer
           className="space-x-3"
-          items={columnItems}
-          kanbanCardItems={kanbanCardItems}
           columnRenderFunc={renderColumn}
         />
       </KanbanContent>
@@ -72,7 +79,7 @@ function renderColumn(id: UniqueIdentifier, items: { id: UniqueIdentifier }[]) {
       <ColumnContent className="p-0 px-1 py-2">
         <KanbanCardsContainer
           className="space-y-1 w-full"
-          items={items}
+          column_id={id}
           cardRenderFunc={renderKanbanCard}
         />
         <div className="flex rounded-sm hover:bg-gray-200 p-2 space-x-1 text-center text-md text-gray-500 ">

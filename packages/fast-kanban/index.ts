@@ -6,6 +6,11 @@ export {
   KanbanContent,
 } from "./src/components/kanban/Board";
 export {
+  KanbanProvider,
+  useColumnItems,
+  useKanbanCardItems,
+} from "./src/components/kanban/Context";
+export {
   Column,
   ColumnHandler,
   ColumnHeader,
@@ -21,4 +26,8 @@ export {
   KanbanCardTitle,
   KanbanCardContent,
 } from "./src/components/kanban/Card";
-export type { UniqueIdentifier } from "./src/components/kanban/types";
+export type {
+  UniqueIdentifier,
+  ColumnItems,
+  KanbanCardItems,
+} from "./src/components/kanban/types";
