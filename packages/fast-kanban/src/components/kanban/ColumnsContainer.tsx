@@ -5,6 +5,9 @@ import {
   useDroppable,
   UniqueIdentifier,
   DragOverEvent,
+  MouseSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { CardContent } from "@/components/ui/card";
@@ -28,8 +31,14 @@ export function SortableColumnsContainer({
   const { setNodeRef } = useDroppable({ id: "droppable" });
   const [cols, setCols] = useColumnItems();
   const [kanbanCards, setKanbanCards] = useKanbanCardItems();
+  const sensors = useSensors(
+    // mouse sensor with activation constraint
+    useSensor(MouseSensor, {
+      activationConstraint: { distance: 5 },
+    })
+  );
   return (
-    <DndContext onDragEnd={onDragEnd} onDragOver={onDragOver}>
+    <DndContext onDragEnd={onDragEnd} onDragOver={onDragOver} sensors={sensors}>
       <SortableContext id="columns" items={cols}>
         <CardContent
           className={cn("flex space-x-4", className)}
